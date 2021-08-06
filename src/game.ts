@@ -58,7 +58,7 @@ export class Game {
     return player;
   }
 
-  public advance(): Board {
+  public advance(logToConsole?: boolean): Board {
     let rval: Board = null;
     if (this.isComplete) {
       // Already done
@@ -68,13 +68,17 @@ export class Game {
       // Board is copied each time in case the player accidentally modifies it somehow
       const move: [number,number] = player.nextMove(this.currentTurn, this.currentBoardCopy);
       if (!this._currentBoard.validMove(this.currentTurn, move)) {
-        console.log(this.currentTurn + ' attempted an invalid move, forfeits');
+        if (logToConsole) {
+          console.log(this.currentTurn + ' attempted an invalid move, forfeits');
+        }
         this._winner = Game.oppositePlayer(this.currentTurn);
       } else {
         this._currentBoard.setValue(this.currentTurn, move);
       }
-      console.log(player.label + ' ('+this._currentTurn+') selects ' + JSON.stringify(move) + ' board is now ('+this.currentStep+')');
-      console.log(this._currentBoard.toString());
+      if (logToConsole) {
+        console.log(player.label + ' ('+this._currentTurn+') selects ' + JSON.stringify(move) + ' board is now ('+this.currentStep+')');
+        console.log(this._currentBoard.toString());
+      }
 
       this._currentStep++;
       this._currentTurn = Game.oppositePlayer(this._currentTurn);
@@ -90,18 +94,26 @@ export class Game {
     return this.currentBoardCopy;
   }
 
-  public run(): Board {
-    let next: Board = this.advance();
+  public run(logToConsole?: boolean): Board {
+    let next: Board = null;
     while (!this.isComplete) {
-      next = this.advance();
+      next = this.advance(logToConsole);
     }
-    if (this.isTie) {
-      console.log('The result is a tie');
-    } else {
-      console.log(this.playerByPiece(this.winner).label + ' ('+this.winner + ') Wins, '+next.piecesFound(this.winner) + ' to ' + next.piecesFound(Game.oppositePlayer(this.winner)));
-    }
-
+    console.log(this.winnerDescription());
     return next;
+  }
+
+  public winnerDescription(): string {
+    let rval: string = null;
+    if (this.isComplete) {
+      if (this.isTie) {
+        rval = ('The result is a tie');
+      } else {
+        const next: Board = this.currentBoardCopy;
+        rval = (this.playerByPiece(this.winner).label + ' ('+this.winner + ') Wins, '+next.piecesFound(this.winner) + ' to ' + next.piecesFound(Game.oppositePlayer(this.winner)));
+      }
+    }
+    return rval;
   }
 
 }
