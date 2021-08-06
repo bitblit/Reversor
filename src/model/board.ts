@@ -9,12 +9,17 @@ export class Board {
 
   constructor(toCopy?: Board) {
     if (toCopy) {
+
       this.state = toCopy.fullBoard;
     }
   }
 
   public get fullBoard(): Piece[][] {
-    return Object.assign([], this.state);
+    let rval: Piece[][]=[];
+    for (let y=0;y<8;y++){
+      rval.push(Object.assign([], this.state[y]));
+    }
+    return rval;
   }
 
   public static createDefaultState(): Piece[][] {
