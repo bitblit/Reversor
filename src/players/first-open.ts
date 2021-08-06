@@ -1,5 +1,5 @@
 /*
-  Just grabs the first open space
+  Just grabs the first open space starting from the upper left corner
 */
 
 import {Board, Piece, Player} from "../model";
