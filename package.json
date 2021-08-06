@@ -1,0 +1,75 @@
+{
+  "name": "@bitblit/reversor",
+  "version": "0.0.0",
+  "description": "Typescript implementation of reversi for competition",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "contributors": [
+    "Christopher Weiss <bitblit@gmail.com>"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "printWidth": 140,
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "config": {},
+  "scripts": {
+    "prepare-to-publish": "yarn clean-compile && yarn run apply-circle && yarn remove-compiled-tests",
+    "copy-static-files": "shx cp -R src/static dist",
+    "clean-compile": "yarn run clean && yarn run generate-barrels && yarn run compile && yarn copy-static-files",
+    "compile": "tsc",
+    "watch": "tsc-watch",
+    "remove-compiled-tests": "rimraf ./lib/**/*.spec.d.ts && rimraf ./lib/**/*.spec.js && rimraf ./lib/**/*.spec.js.map",
+    "clean": "shx rm -Rf lib bundles temp",
+    "compile-test": "yarn compile && yarn test",
+    "test": "jest",
+    "apply-circle": "node dist/node-only/circleci/apply-circle-ci-env-variables-to-files dist/static/build-properties.json",
+    "lint": "eslint src/**/*.ts",
+    "lint-fix": "eslint --fix src/**/*.ts",
+    "generate-barrels": "barrelsby --delete -d src -l below -e .*\\.spec\\.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitblit/Reversor"
+  },
+  "keywords": [
+    "wrench",
+    "utility"
+  ],
+  "bugs": {
+    "url": "https://github.com/bitblit/Reversor/issues"
+  },
+  "homepage": "https://github.com/bitblit/Reversor#readme",
+  "engines": {
+    "node": ">=14.15"
+  },
+  "license": "Apache-2.0",
+  "resolutions": {
+  },
+  "devDependencies": {
+    "@types/node": "14.14.31",
+    "@types/jest": "26.0.24",
+    "@typescript-eslint/eslint-plugin": "4.28.3",
+    "@typescript-eslint/parser": "4.28.3",
+    "barrelsby": "2.2.0",
+    "eslint": "7.30.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-import": "2.23.4",
+    "eslint-plugin-prettier": "3.4.0",
+    "husky": "7.0.1",
+    "jest": "27.0.6",
+    "prettier": "2.3.2",
+    "ts-jest": "27.0.3",
+    "ts-node": "10.1.0",
+    "tsc-watch": "4.4.0",
+    "typescript": "4.3.5"
+  }
+}
