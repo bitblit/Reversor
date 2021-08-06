@@ -41,7 +41,7 @@ export class Board {
         || row<0 || row > 7 || column < 0 || column > 7) {
       throw new Error('Invalid row or column : '+column+' x ' + row);
     }
-    return this.state[column][row];
+    return this.state[row][column];
   }
 
 
@@ -84,7 +84,7 @@ export class Board {
     while (this.validCoords(cur) && (cur[0]!==endCoords[0] || cur[1]!=endCoords[1])) {
         cur = tx(cur);
         if (this.validCoords(cur)) {
-          this.state[cur[0]][cur[1]] = piece;
+          this.state[cur[1]][cur[0]] = piece;
         }
     }
   }
@@ -111,7 +111,7 @@ export class Board {
 
   public setValue(piece: Piece, coords: [number,number]): void {
     if (this.validMove(piece, coords)) {
-      this.state[coords[0]][coords[1]] = piece;
+      this.state[coords[1]][coords[0]] = piece;
       this.findAndApply(piece, coords, (c) => [c[0]+1, c[1]]); // East
       this.findAndApply(piece, coords, (c) => [c[0]-1, c[1]]); // West
       this.findAndApply(piece, coords, (c) => [c[0], c[1]+1]); // South
@@ -127,8 +127,8 @@ export class Board {
 
   public toString(): string {
     let rval: string = '';
-    for (let x=0;x<8;x++) {
-      for (let y=0;y<8;y++) {
+    for (let y=0;y<8;y++) {
+      for (let x=0;x<8;x++) {
         const value: Piece = this.valueOfXY(x, y);
         rval += (value) ? value : '.';
       }

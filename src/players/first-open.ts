@@ -12,8 +12,8 @@ export class FirstOpen implements Player {
   public nextMove(yourType: Piece, board: Board): [number, number] {
     let xToUse: number = null;
     let yToUse: number = null;
-    for (let x=0;x<8 && xToUse===null;x++) {
-      for (let y=0;y<8 && yToUse===null;y++) {
+    for (let y=0;y<8 && yToUse===null;y++) {
+      for (let x=0;x<8 && xToUse===null;x++) {
         const cur: Piece = board.valueOfXY(x,y);
         if (!cur) {
           xToUse = x;
